@@ -18,6 +18,9 @@ class App extends React.Component {
     //Load mobilenet model
     this.mobile = await mobilenet.load()
     this.setState({ isModelReady: true })
+
+    //Call the async method created below
+    this.getPermissionAsync();
   }
   getPermissionAsync = async () => {
     if(Constants.platform.ios) {
