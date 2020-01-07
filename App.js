@@ -4,6 +4,15 @@ import * as tf from '@tensorflow/tfjs';
 import {fetch} from '@tensorflow/tfjs-react-native'
 
 class App extends React.Component{
+  state ={
+    isReady: false,
+  }
+
+   async componentDidMount(){
+     await tf.ready()
+     this.setState({ isReady: true})
+     console.log(this.state.isReady)
+   }
   render(){
    return (
     <View style={styles.container}>
