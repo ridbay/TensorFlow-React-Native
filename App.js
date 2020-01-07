@@ -5,6 +5,8 @@ import { fetch } from '@tensorflow/tfjs-react-native';
 import * as mobilenet from '@tensorflow-models/mobilenet';
 import Constants from 'expo-constants';
 import * as Permissions from 'expo-permissions';
+import * as jpeg from 'jpeg-js';
+
 
 class App extends React.Component {
   state = {
@@ -29,6 +31,22 @@ class App extends React.Component {
         alert('Sorry, we need camera roll permissions to make this work!')
       }
     }
+  }
+
+  imageToTensor(rawImageData){
+    const TO_UNIT8ARRAY = true;
+    const {width, height, data} = jpeg.decode(rawImageData, TO_UNIT8ARRAY)
+
+    //drop the alpha channel info for mobileNet
+    const buffer = new Uint8Array(width * height * 3);
+    let offset = 0;  //Offset into original data
+    for (let i =0; i < buffer.length; i +=3){
+      buffer[i] = data[offset]
+      buffer[i+1] = data[offset +1]
+      buffer[i+2] = data[offset +2]
+      offset +=4
+    }
+    return tf.tensor3d(buffer, [height, width, 3])
   }
 
   render() {
