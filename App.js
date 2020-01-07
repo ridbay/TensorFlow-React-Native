@@ -1,22 +1,27 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import * as tf from '@tensorflow/tfjs';
-import {fetch} from '@tensorflow/tfjs-react-native'
+import {fetch} from '@tensorflow/tfjs-react-native';
+import * as mobilenet from '@tensorflow-models/mobilenet';
 
 class App extends React.Component{
   state ={
-    isReady: false,
+    isTFReady: false,
+    isModelReady: false,
   }
 
    async componentDidMount(){
-     await tf.ready()
-     this.setState({ isReady: true})
-     console.log(this.state.isReady)
+     await tf.ready();
+     this.setState({ isTFReady: true})
+     //Load mobilenet model
+     this.mobile = await mobilenet.load()
+     this.setState({isModelReady: true})
    }
+
   render(){
    return (
     <View style={styles.container}>
-  <Text>TFJS ready? {this.state.isReady}? <Text>Yes</Text>: <Text>No</Text></Text>
+  <Text>TFJS ready? {this.state.isTFReady}? <Text>Yes</Text>: <Text>No</Text></Text>
     </View>
   ); 
   }
