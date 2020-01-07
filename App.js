@@ -21,7 +21,10 @@ class App extends React.Component{
   render(){
    return (
     <View style={styles.container}>
-  <Text>TFJS ready? {this.state.isTFReady}? <Text>Yes</Text>: <Text>No</Text></Text>
+  <Text>TFJS ready? {this.state.isTFReady? <Text>Yes</Text>: <Text>No</Text>}</Text>
+  <Text>
+    Model ready ? {this.state.isModelReady ? <Text>Yes</Text>: <Text>No</Text>}
+  </Text>
     </View>
   ); 
   }
