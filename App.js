@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, ImagePickerIOS } from 'react-native';
+import { StyleSheet, Text, View, ImagePickerIOS, StatusBar, ActivityIndicator } from 'react-native';
 import * as tf from '@tensorflow/tfjs';
 import { fetch } from '@tensorflow/tfjs-react-native';
 import * as mobilenet from '@tensorflow-models/mobilenet';
@@ -84,12 +84,22 @@ class App extends React.Component {
   }
 
   render() {
+    const { isTFReady, isModelReady, predictions, image} = this.state;
+
     return (
       <View style={styles.container}>
-        <Text>TFJS ready? {this.state.isTFReady ? <Text>Yes</Text> : <Text>No</Text>}</Text>
-        <Text>
-          Model ready ? {this.state.isModelReady ? <Text>Yes, model is loaded</Text> : <Text>Loading Model...</Text>}
+        <StatusBar barStyle='light-content'/>
+        <View style={styles.loadingContainer}>
+        <Text style={styles.commontextStyles}>
+          TFJS ready ? {this.state.isTFReady ? <Text>✅</Text> : <Text>No</Text>}</Text>
+        <View style={styles.loadingModelContainer}>
+        <Text style={styles.text}>
+          Model ready ? {this.state.isModelReady ? <Text style={styles.text}>Yes, model is loaded ✅</Text> : <ActivityIndicator size='small'/>}
         </Text>
+        </View>
+        </View>
+        
+        
       </View>
     );
   }
