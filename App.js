@@ -1,17 +1,20 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, ImagePickerIOS } from 'react-native';
 import * as tf from '@tensorflow/tfjs';
 import { fetch } from '@tensorflow/tfjs-react-native';
 import * as mobilenet from '@tensorflow-models/mobilenet';
 import Constants from 'expo-constants';
 import * as Permissions from 'expo-permissions';
 import * as jpeg from 'jpeg-js';
+import * as Permissions from 'expo-permissions'
 
 
 class App extends React.Component {
   state = {
     isTFReady: false,
     isModelReady: false,
+    predictions: null,
+    image: null
   }
 
   async componentDidMount() {
@@ -47,6 +50,37 @@ class App extends React.Component {
       offset +=4
     }
     return tf.tensor3d(buffer, [height, width, 3])
+  }
+  classifyImage = async () => {
+    try {
+      const imageAssetPath = Image.resolveAssetSource(this.state.image)
+      const response = await fetch(imageAssetPath.uri, {}, {isBinary: true})
+      const rawImageData = await response.arrayBuffer();
+      const imageTensor = this.imageToTensor(rawImageData)
+      const predictions = await this.model.classify(imageTensor)
+      this.setState({predictions})
+      console.log(predictions)
+    } catch (error) {
+      console.log(error)
+      
+    }
+  }
+
+  selectImage = async () => {
+    try {
+      let response = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePickerIOS.mediaTypesOptions.All,
+        allowsEditing: true,
+        aspect: [4,3]
+      })
+      if (!response.cancelled) {
+        const source = {uri: response.uri}
+        this.setState({ image: source})
+        this.classifyImage()
+      }
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   render() {
