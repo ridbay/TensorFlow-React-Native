@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, ImagePickerIOS, StatusBar, ActivityIndicator } from 'react-native';
+import { StyleSheet, Text, View, ImagePickerIOS, StatusBar, ActivityIndicator, TouchableOpacity } from 'react-native';
 import * as tf from '@tensorflow/tfjs';
 import { fetch } from '@tensorflow/tfjs-react-native';
 import * as mobilenet from '@tensorflow-models/mobilenet';
@@ -98,6 +98,16 @@ class App extends React.Component {
         </Text>
         </View>
         </View>
+        <TouchableOpacity
+        style={styles.imageWrapper}
+        onPress={isModelReady? this.selectImage : undefined}>
+          {image && <Image source={image} style={styles.imageContainer} />}
+          
+          {isModelReady && !image && (
+            <Text style={styles.transparentText}>Tap to choose Image</Text>
+          )}
+
+        </TouchableOpacity>
         
         
       </View>
