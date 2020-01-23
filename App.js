@@ -6,8 +6,6 @@ import * as mobilenet from '@tensorflow-models/mobilenet';
 import Constants from 'expo-constants';
 import * as Permissions from 'expo-permissions';
 import * as jpeg from 'jpeg-js';
-import * as Permissions from 'expo-permissions'
-
 
 class App extends React.Component {
   state = {
@@ -134,7 +132,6 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#171f24',
     alignItems: 'center',
-    // justifyContent: 'center',
   },
   loadingContainer: {
     marginTop: 80,
